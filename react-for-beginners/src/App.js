@@ -21,6 +21,7 @@ function App() {
       <h1>the coins! {loading ? null : `(${coins.length})`}</h1>
       <div>
         <input type="number" value={myMoney} onChange={writeMoney} placeholder="WRITE UR USD"></input>
+        <span> USD</span>
       </div>
       {loading ?
         <strong>Loading...</strong> : 
