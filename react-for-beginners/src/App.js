@@ -1,45 +1,40 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [loading, setLoading] = useState(true); //loading 글자를 띄울지 말지를 결정하는 함수
-  const [coins, setCoins] = useState([]);
-  const [myMoney, setMyMoney] = useState(0);
-  const [getCoin, setGetCoin] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
+  const getMovies = async () => {
+    const json = await (
+      await fetch(
+        `https://yts.mx/api/v2/list_movies.json?minimum_rating=8.8&sort_by=year`
+      )
+    ).json();
+    setMovies(json.data.movies);
+    setLoading(false);
+  };
   useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers") // 정보 가져올 url
-    .then((response) => response.json()) // url에서 가져온 정보를 json으로 변환
-    .then((json) => { 
-      setCoins(json); // 변환된 json을 coins(빈 array)에 넣기
-      setLoading(false); // loading 글자 지우기
-    }
-    )
-  }, [])
-  const writeMoney = (e) => setMyMoney(e.target.value);
-  const selectCoin = (e) => setGetCoin(e.target.value);
-  return ( //함수 사이에 string 삽입 시: `~`, string 사이에 인자나 함수 삽입 시: ${~}
+    getMovies();
+  }, []);
+  return (
     <div>
-      <h1>the coins! {loading ? null : `(${coins.length})`}</h1>
-      <div>
-        <input type="number" value={myMoney} onChange={writeMoney} placeholder="WRITE UR USD"></input>
-        <span> USD</span>
-      </div>
-      {loading ?
-        <strong>Loading...</strong> : 
-        <select onChange={selectCoin}>
-          <option key="-1">
-            select coin
-          </option>
-        {coins.map((coin, index) =>
-          <option key={index} value={coin.quotes.USD.price}>
-            {coin.name}({coin.symbol}): ${(coin.quotes.USD.price).toFixed(2)}
-          </option>
-          )
-        }
-      </select>
-      }
-      <div>
-        <h2>Coins you can buy: { getCoin > 0 ? (myMoney / getCoin).toFixed(2) : null}</h2>
-      </div>
+      {loading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div>
+          {movies.map((movie) => (
+            <div key={movie.id}>
+              <img src={movie.medium_cover_image} alt ={"title"}/>
+              <h2>{movie.title}</h2>
+              <p>{movie.summary}</p>
+              {movie.hasOwnProperty("genres")? <ul>
+                {movie.genres.map((g)=>(
+                <li key={g}>{g}</li>
+                ))}
+              </ul> : null}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
