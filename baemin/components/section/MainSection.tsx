@@ -1,15 +1,13 @@
+import MainCard from "../card/MainCard";
+
 export default function MainSection() {
     return(
         <section className="h-full">
             <div className="flex">
-            {[1,2,3,4,5].map((index:number)=>(
-            <div key={index}>Card</div>    
+            {["배달","B마트","배민스토어"].map((value: string, index:number)=>(
+            <MainCard key={index} title={value} />   
             ))}
             </div>
-            <div>Big card</div>
-            <div>banner Carousel</div>
-            <div>icon menu horizen</div>
-            <div>우리동네 빠른 배달</div>
         </section>
     );
 }
