@@ -55,7 +55,7 @@ const deliveryIcons = [
 
 export default function DeliveryCard() {
   return (
-    <>
+    <div className="p-2">
       <div className="w-full flex flex-col bg-white p-2 rounded-xl">
         <div className="flex w-full justify-between">
           <div className="flex gap-2 items-center">
@@ -98,6 +98,6 @@ export default function DeliveryCard() {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }
